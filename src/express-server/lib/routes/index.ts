@@ -1,5 +1,6 @@
 import express = require('express');
-import path = require('path');
+import games from './games';
+
 const router = express.Router();
 
 // Logging / utility route
@@ -17,6 +18,9 @@ router.get('/hello', function (req, res) {
         'hello': 'world'
     })
 })
+
+router.use('/games', games)
+
 
 // Fall through to error handler
 router.use('/', (err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
