@@ -3,29 +3,45 @@ import * as uuid from 'uuid/v4';
 
 interface Game {
     id: string;
+    name: string;
 }
+
+const defaults = Object.freeze({
+    name: 'Game',
+})
 
 const games: {[id: string]: Game} = {};
 
-export function create() {
+export function create(game: {
+    name: string,
+}) {
     let id;
     do {
         id = uuid();
     } while (games[id]);
 
     games[id] = {
-        id,
+        ...defaults,
+        ...game,
+        id: id,
     };
 
-    return games[id];
+    return retrieve(id);
 }
 
 export function retrieve(id: string) {
-    return games[id] || null;
+    const {
+        name,
+    } = games[id];
+
+    return {
+        id,
+        name,
+    };
 }
 
 export function list() {
-    return _.map(games, (game) => {
-        return _.pick(game, ['id']);
+    return Object.keys(games).map((id) => {
+        return retrieve(id);
     })
 }
